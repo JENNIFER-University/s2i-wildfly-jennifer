@@ -19,6 +19,7 @@ LABEL io.k8s.description="Builder Image for Wildfly 12.0 with JENNIFER Agent" \
 
 # Update and OS packages
 RUN yum -y update; \
+    yum install bc -y; \
     yum install wget -y; \
     yum install tar -y; \
     yum install unzip -y; \
@@ -37,9 +38,10 @@ WORKDIR /
 RUN wget -q -e use_proxy=yes https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz && \
     tar -zxf wildfly-*.tar.gz &&\
     rm -f wildfly-*.tar.gz && \
-    mv wildfly-* wildfly && \
-    (curl -v https://www.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | \
-    tar -zx -C /usr/local) && \
+    mv wildfly-* wildfly
+
+RUN wget -q -e use_proxy=yes https://www.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
+    tar -zxf apache-maven* -C /usr/local && \
     ln -sf /usr/local/apache-maven-$MAVEN_VERSION/bin/mvn /usr/local/bin/mvn && \
     mkdir -p $HOME/.m2 && \
     mkdir -p /opt/s2i/destination

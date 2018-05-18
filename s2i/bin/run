@@ -1,4 +1,6 @@
 #!/bin/sh
-export JAVA_OPTS=" $JAVA_OPTS -javaagent:/agent.java/jennifer.jar -Djennifer.config=/agent.java/conf/jennifer.conf"
+
+# JENNIFER Agent
+export JAVA_OPTS_EXT="-javaagent:/agent.java/jennifer.jar -Djennifer.config=/agent.java/conf/jennifer.conf -Djboss.modules.system.pkgs=org.jboss.byteman,aries"
 
 exec /wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
